@@ -103,3 +103,14 @@ test('return emptpy array if no plugins are set', async t => {
 	const files = await m(path.join(__dirname, 'fixtures', 'file.tar'), {plugins: []});
 	t.is(files.length, 0);
 });
+
+test('error handling', async t => {
+	const brokenBuf = await fsP.readFile(path.join(__dirname, 'fixtures', 'broken.tar.gz'));
+	let caughtError = false;
+	try {
+		await m(brokenBuf);
+	} catch (err) {
+		caughtError = true;
+	}
+	t.true(caughtError);
+});
